@@ -1,0 +1,164 @@
+name: Deploy to Hostinger via SSH
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  # Job 1: Build and Test
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: |
+            out/
+            public/.htaccess
+          retention-days: 1
+
+  # Job 2: Deploy via SSH
+  deploy:
+    name: Deploy to Hostinger via SSH
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOSTINGER_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Test SSH Connection
+        run: |
+          echo "🔍 Testing SSH connection..."
+          ssh -o ConnectTimeout=10 ${{ secrets.HOSTINGER_SSH_USERNAME }}@${{ secrets.HOSTINGER_SSH_HOST }} "echo 'SSH connection successful!'"
+
+      - name: Deploy via SSH - Method 1 (rsync)
+        run: |
+          echo "🚀 Deploying files via rsync..."
+          # Create target directory if it doesn't exist
+          ssh ${{ secrets.HOSTINGER_SSH_USERNAME }}@${{ secrets.HOSTINGER_SSH_HOST }} "mkdir -p ${{ secrets.HOSTINGER_DOMAIN_PATH }}"
+
+          # Sync files with rsync
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./out/ \
+            ${{ secrets.HOSTINGER_SSH_USERNAME }}@${{ secrets.HOSTINGER_SSH_HOST }}:${{ secrets.HOSTINGER_DOMAIN_PATH }}/
+
+      - name: Set proper file permissions
+        run: |
+          echo "🔧 Setting file permissions..."
+          ssh ${{ secrets.HOSTINGER_SSH_USERNAME }}@${{ secrets.HOSTINGER_SSH_HOST }} "
+            find ${{ secrets.HOSTINGER_DOMAIN_PATH }} -type d -exec chmod 755 {} \;
+            find ${{ secrets.HOSTINGER_DOMAIN_PATH }} -type f -exec chmod 644 {} \;
+            chmod 644 ${{ secrets.HOSTINGER_DOMAIN_PATH }}/.htaccess
+          "
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 Your site should be live soon!"
+          echo "📁 Files deployed to: ${{ secrets.HOSTINGER_DOMAIN_PATH }}"
+
+  # Alternative Method: SCP Deployment (backup)
+  deploy-scp:
+    name: Deploy to Hostinger via SCP (Alternative)
+    runs-on: ubuntu-latest
+    needs: build
+    if: false # Set to true to use this method instead
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOSTINGER_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via SCP
+        run: |
+          echo "🚀 Deploying files via SCP..."
+          # Create target directory
+          ssh ${{ secrets.HOSTINGER_SSH_USERNAME }}@${{ secrets.HOSTINGER_SSH_HOST }} "mkdir -p ${{ secrets.HOSTINGER_DOMAIN_PATH }}"
+
+          # Copy all files
+          scp -r ./out/* ${{ secrets.HOSTINGER_SSH_USERNAME }}@${{ secrets.HOSTINGER_SSH_HOST }}:${{ secrets.HOSTINGER_DOMAIN_PATH }}/
+
+  # Job 3: Notify Status
+  notify:
+    name: Notify Status
+    runs-on: ubuntu-latest
+    needs: [build, deploy]
+    if: always()
+
+    steps:
+      - name: Success notification
+        if: needs.deploy.result == 'success'
+        run: |
+          echo "🎉 SSH Deployment successful!"
+          echo "📊 Build Status: ${{ needs.build.result }}"
+          echo "🚀 Deploy Status: ${{ needs.deploy.result }}"
+
+      - name: Failure notification
+        if: needs.deploy.result == 'failure' || needs.build.result == 'failure'
+        run: |
+          echo "❌ Deployment failed!"
+          echo "📊 Build Status: ${{ needs.build.result }}"
+          echo "🚀 Deploy Status: ${{ needs.deploy.result }}"
+          echo "💡 Check the logs above for specific error details"
+          exit 1
