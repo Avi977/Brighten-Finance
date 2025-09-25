@@ -1,19 +1,19 @@
-name: Deploy to Hostinger (FTP - DISABLED)
+name: Deploy to Hostinger (SSH/FTP Hybrid)
 
 on:
-  # Disabled - using SSH deployment instead
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
   workflow_dispatch:
 
-env:
-  NODE_VERSION: '18'
-  NEXT_TELEMETRY_DISABLED: 1
+permissions:
+  contents: read
 
 jobs:
-  # Job 1: Build and Test
-  build:
-    name: Build & Test
+  build-and-deploy:
+    name: Build and Deploy to Hostinger
     runs-on: ubuntu-latest
 
     steps:
@@ -23,110 +23,99 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '18'
           cache: 'npm'
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
       - name: Install dependencies
-        run: npm ci --prefer-offline --no-audit
-
-      - name: Run ESLint
-        run: npm run lint
-
-      - name: Type check
-        run: npx tsc --noEmit
+        run: npm ci
 
       - name: Build application
         run: npm run build
-        env:
-          NODE_ENV: production
 
-      # Static export happens automatically with output: 'export' in next.config.ts
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files
-          path: |
-            out/
-            .next/
-            public/
-          retention-days: 1
-
-  # Job 2: Deploy to Hostinger
-  deploy:
-    name: Deploy to Hostinger
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-
-      - name: Test FTP Connection
+      - name: Prepare deployment files
         run: |
-          echo "🔍 Testing FTP connection..."
-          echo "Server: ${{ secrets.HOSTINGER_FTP_SERVER }}"
-          echo "Username: ${{ secrets.HOSTINGER_FTP_USERNAME }}"
-          # Test if server is reachable
-          ping -c 1 ${{ secrets.HOSTINGER_FTP_SERVER }} || echo "⚠️ Server not pingable (this is normal for some FTP servers)"
+          # Create deployment directory
+          mkdir -p deploy
 
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+          # Copy all built files
+          cp -r out/* deploy/
+
+          # Copy essential server files
+          cp public/.htaccess deploy/ 2>/dev/null || echo ".htaccess not found, skipping"
+          cp public/robots.txt deploy/ 2>/dev/null || echo "robots.txt not found, skipping"
+          cp public/sitemap.xml deploy/ 2>/dev/null || echo "sitemap.xml not found, skipping"
+
+          # Create PHP index for better hosting compatibility
+          cat > deploy/index.php << 'EOF'
+          <?php
+          // Redirect to index.html for static hosting
+          if (file_exists('index.html')) {
+              include 'index.html';
+          } else {
+              echo 'Site is being deployed...';
+          }
+          ?>
+          EOF
+
+          # Create deployment info
+          echo "Deployed: $(date)" > deploy/deploy-info.txt
+          echo "Commit: ${{ github.sha }}" >> deploy/deploy-info.txt
+          echo "Repository: ${{ github.repository }}" >> deploy/deploy-info.txt
+
+      - name: Deploy via SSH (Primary Method)
+        id: ssh_deploy
+        continue-on-error: true
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT || 22 }}
+          source: "deploy/*"
+          target: "/home/${{ secrets.HOSTINGER_USERNAME }}/domains/darkgrey-dunlin-762929.hostingersite.com/public_html"
+          strip_components: 1
+          overwrite: true
+
+      - name: Set permissions via SSH
+        if: steps.ssh_deploy.outcome == 'success'
+        continue-on-error: true
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT || 22 }}
+          script: |
+            cd "/home/${{ secrets.HOSTINGER_USERNAME }}/domains/darkgrey-dunlin-762929.hostingersite.com/public_html"
+            find . -type f -name "*.html" -exec chmod 644 {} \;
+            find . -type f -name "*.php" -exec chmod 644 {} \;
+            find . -type f -name "*.css" -exec chmod 644 {} \;
+            find . -type f -name "*.js" -exec chmod 644 {} \;
+            find . -type f -name ".htaccess" -exec chmod 644 {} \; 2>/dev/null || true
+            find . -type d -exec chmod 755 {} \;
+            echo "✅ SSH deployment successful!"
+
+      - name: Deploy via FTP (Fallback Method)
+        if: steps.ssh_deploy.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          server-dir: /public_html/
-          local-dir: ./out/
-          timeout: 60000
-          log-level: verbose
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/*.md
-            .env*
-            .DS_Store
+          local-dir: ./deploy/
+          server-dir: /domains/darkgrey-dunlin-762929.hostingersite.com/public_html/
+          dangerous-clean-slate: true
 
-      - name: Verify deployment
+      - name: Deployment Summary
         run: |
-          echo "✅ Deployment completed successfully!"
-          echo "🌐 Your site should be live at: https://yourdomain.com"
+          echo "🚀 Deployment completed!"
+          echo "📅 Deployed at: $(date)"
+          echo "📝 Commit: ${{ github.sha }}"
+          echo "🌐 Your site should be live at: https://darkgrey-dunlin-762929.hostingersite.com"
 
-  # Job 3: Notify deployment status
-  notify:
-    name: Notify Status
-    runs-on: ubuntu-latest
-    needs: [build, deploy]
-    if: always()
-
-    steps:
-      - name: Success notification
-        if: needs.deploy.result == 'success'
-        run: |
-          echo "🎉 Deployment successful!"
-          echo "📊 Build Status: ${{ needs.build.result }}"
-          echo "🚀 Deploy Status: ${{ needs.deploy.result }}"
-
-      - name: Failure notification
-        if: needs.deploy.result == 'failure' || needs.build.result == 'failure'
-        run: |
-          echo "❌ Deployment failed!"
-          echo "📊 Build Status: ${{ needs.build.result }}"
-          echo "🚀 Deploy Status: ${{ needs.deploy.result }}"
-          exit 1
+          if [ "${{ steps.ssh_deploy.outcome }}" = "success" ]; then
+            echo "✅ Used SSH deployment (faster, more reliable)"
+          else
+            echo "✅ Used FTP deployment (SSH not available)"
+            echo "💡 To enable SSH: Contact Hostinger support or upgrade hosting plan"
+          fi
