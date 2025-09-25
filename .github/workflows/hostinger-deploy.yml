@@ -75,14 +75,26 @@ jobs:
         with:
           name: build-files
 
+      - name: Test FTP Connection
+        run: |
+          echo "🔍 Testing FTP connection..."
+          echo "Server: ${{ secrets.HOSTINGER_FTP_SERVER }}"
+          echo "Username: ${{ secrets.HOSTINGER_FTP_USERNAME }}"
+          # Test if server is reachable
+          ping -c 1 ${{ secrets.HOSTINGER_FTP_SERVER }} || echo "⚠️ Server not pingable (this is normal for some FTP servers)"
+
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
           server-dir: /public_html/
           local-dir: ./out/
+          timeout: 60000
+          log-level: verbose
           exclude: |
             **/.git*
             **/.git*/**

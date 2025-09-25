@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app:*)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:www.pinterest.com)",
+      "Bash(npx claude-flow:*)",
+      "Bash(curl:*)",
+      "Bash(git push:*)",
+      "Bash(npm run lint)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(cat:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
