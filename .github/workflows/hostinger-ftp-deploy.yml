@@ -1,0 +1,93 @@
+name: Deploy to Hostinger via FTP
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy via FTP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Prepare deployment files
+        run: |
+          # Create deployment directory
+          mkdir -p deploy
+
+          # Copy all built files
+          cp -r out/* deploy/
+
+          # Copy essential server files (if they exist)
+          cp public/.htaccess deploy/ 2>/dev/null || echo "No .htaccess found"
+          cp public/robots.txt deploy/ 2>/dev/null || echo "No robots.txt found"
+          cp public/sitemap.xml deploy/ 2>/dev/null || echo "No sitemap.xml found"
+
+          # Create PHP index for better hosting compatibility
+          cat > deploy/index.php << 'EOF'
+          <?php
+          // PHP fallback for static hosting
+          if (file_exists('index.html')) {
+              include 'index.html';
+          } else {
+              echo '<h1>Site is being deployed...</h1><p>Please check back in a few minutes.</p>';
+          }
+          ?>
+          EOF
+
+          # Create deployment info file
+          echo "Deployed: $(date)" > deploy/deploy-info.txt
+          echo "Commit: ${{ github.sha }}" >> deploy/deploy-info.txt
+          echo "Build: ${{ github.run_number }}" >> deploy/deploy-info.txt
+
+          echo "✅ Build completed successfully!"
+          echo "📁 Files prepared for deployment:"
+          ls -la deploy/ | head -10
+
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          local-dir: ./deploy/
+          server-dir: /domains/darkgrey-dunlin-762929.hostingersite.com/public_html/
+          dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.next/cache/**
+
+      - name: Deployment Success
+        run: |
+          echo "🎉 Deployment completed successfully!"
+          echo "🌐 Your site is now live at: https://darkgrey-dunlin-762929.hostingersite.com"
+          echo "📅 Deployed: $(date)"
+          echo "📝 Commit: ${{ github.sha }}"
+          echo "🔢 Build #: ${{ github.run_number }}"
+          echo ""
+          echo "🔍 Deployment Details:"
+          echo "- Method: FTP (reliable)"
+          echo "- Server: ${{ secrets.HOSTINGER_HOST }}"
+          echo "- Target: /domains/darkgrey-dunlin-762929.hostingersite.com/public_html/"
+          echo "- Status: ✅ SUCCESS"
