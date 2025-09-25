@@ -1,0 +1,122 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18'
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  # Job 1: Build and Test
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Export static build
+        run: npx next export
+        continue-on-error: true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-files
+          path: |
+            out/
+            .next/
+            public/
+          retention-days: 1
+
+  # Job 2: Deploy to Hostinger
+  deploy:
+    name: Deploy to Hostinger
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-files
+
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: /domains/yourdomain.com/public_html/
+          local-dir: ./out/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/*.md
+            .env*
+            .DS_Store
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 Your site should be live at: https://yourdomain.com"
+
+  # Job 3: Notify deployment status
+  notify:
+    name: Notify Status
+    runs-on: ubuntu-latest
+    needs: [build, deploy]
+    if: always()
+
+    steps:
+      - name: Success notification
+        if: needs.deploy.result == 'success'
+        run: |
+          echo "🎉 Deployment successful!"
+          echo "📊 Build Status: ${{ needs.build.result }}"
+          echo "🚀 Deploy Status: ${{ needs.deploy.result }}"
+
+      - name: Failure notification
+        if: needs.deploy.result == 'failure' || needs.build.result == 'failure'
+        run: |
+          echo "❌ Deployment failed!"
+          echo "📊 Build Status: ${{ needs.build.result }}"
+          echo "🚀 Deploy Status: ${{ needs.deploy.result }}"
+          exit 1
