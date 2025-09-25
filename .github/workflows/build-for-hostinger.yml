@@ -3,6 +3,9 @@ name: Build for Hostinger Basic Git
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'deployment/**'
+      - '*.md'
   workflow_dispatch:
 
 permissions:
