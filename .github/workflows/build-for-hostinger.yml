@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-and-commit:
     name: Build and Commit Static Files
@@ -15,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -53,8 +57,8 @@ jobs:
 
       - name: Commit built files
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
           # Remove existing deployment files
           git rm -rf deployment/ 2>/dev/null || true
@@ -72,7 +76,7 @@ jobs:
             Generated: $(date)
             Commit: ${{ github.sha }}
             "
-            git push
+            git push origin main
           else
             echo "No changes to commit"
           fi
