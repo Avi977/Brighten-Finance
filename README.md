@@ -25,6 +25,11 @@
 - Zod validation
 - Lucide Icons
 
+### 🚀 Automatic Deployment:
+- **Live Site**: https://darkgrey-dunlin-762929.hostingersite.com
+- **Auto-deploy**: Every push to main branch automatically deploys via GitHub Actions
+- **Deployment Method**: Hybrid SSH/FTP to Hostinger
+
 ### Development:
 ```bash
 npm run dev
