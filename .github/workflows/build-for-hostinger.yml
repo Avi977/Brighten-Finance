@@ -1,0 +1,78 @@
+name: Build for Hostinger Basic Git
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-commit:
+    name: Build and Commit Static Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Prepare deployment files
+        run: |
+          # Create a deployment directory
+          mkdir -p deployment
+
+          # Copy built files to deployment directory
+          cp -r out/* deployment/
+
+          # Copy .htaccess for proper routing
+          cp public/.htaccess deployment/
+
+          # Create a simple PHP index for better hosting compatibility
+          cat > deployment/index.php << 'EOF'
+          <?php
+          // Redirect to index.html for static hosting
+          if (file_exists('index.html')) {
+              include 'index.html';
+          } else {
+              echo 'Site is being deployed...';
+          }
+          ?>
+          EOF
+
+      - name: Commit built files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Remove existing deployment files
+          git rm -rf deployment/ 2>/dev/null || true
+
+          # Add new deployment files
+          git add deployment/
+
+          # Check if there are changes to commit
+          if ! git diff --staged --quiet; then
+            git commit -m "🚀 Auto-build for Hostinger deployment [skip ci]
+
+            Built static files for Hostinger basic Git deployment.
+            Files ready for direct hosting without build process.
+
+            Generated: $(date)
+            Commit: ${{ github.sha }}
+            "
+            git push
+          else
+            echo "No changes to commit"
+          fi
