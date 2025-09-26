@@ -2,8 +2,8 @@ import { generatePageMetadata } from '@/lib/seo'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const metadata = generatePageMetadata(
-  'Frequently Asked Questions - Byton Finance',
-  'Get answers to common questions about business loans, car loans, application process, rates, and terms at Byton Finance.',
+  'Frequently Asked Questions - Brighten Finance',
+  'Get answers to common questions about business loans, car loans, application process, rates, and terms at Brighten Finance.',
   '/faqs'
 )
 

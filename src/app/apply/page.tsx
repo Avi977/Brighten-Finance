@@ -2,7 +2,7 @@ import { generatePageMetadata } from '@/lib/seo'
 import MultiStepForm from '@/components/forms/MultiStepForm'
 
 export const metadata = generatePageMetadata(
-  'Apply for Loan - Byton Finance',
+  'Apply for Loan - Brighten Finance',
   'Apply for business loans or car loans online. Fast approval process with competitive rates. Complete your secure application in just 5 minutes.',
   '/apply'
 )

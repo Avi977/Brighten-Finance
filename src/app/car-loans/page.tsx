@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle, Car, DollarSign, Clock } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo'
 
 export const metadata = generatePageMetadata(
-  'Premium Car Loans - Luxury Vehicle Financing | Byton Finance',
+  'Premium Car Loans - Luxury Vehicle Financing | Brighten Finance',
   'Exclusive automotive financing for luxury vehicles. Mercedes, BMW, Audi financing with rates from 2.99% APR. Up to $2M for exotic cars with white-glove service.',
   '/car-loans'
 )

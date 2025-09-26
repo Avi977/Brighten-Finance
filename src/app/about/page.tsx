@@ -6,8 +6,8 @@ import { ArrowRight, Users, Award, Shield, TrendingUp } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo'
 
 export const metadata = generatePageMetadata(
-  'About Byton Finance - Your Trusted Lending Partner',
-  'Learn about Byton Finance, a trusted leader in business and auto financing. Discover our mission, values, and commitment to helping customers achieve their financial goals.',
+  'About Brighten Finance - Your Trusted Lending Partner',
+  'Learn about Brighten Finance, a trusted leader in business and auto financing. Discover our mission, values, and commitment to helping customers achieve their financial goals.',
   '/about'
 )
 
@@ -37,7 +37,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl lg:text-4xl font-bold mb-6">Who We Are</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Byton Finance was founded with a simple mission: to make business and personal financing accessible, transparent, and fast. We understand that when you need funding, time is critical.
+                Brighten Finance was founded with a simple mission: to make business and personal financing accessible, transparent, and fast. We understand that when you need funding, time is critical.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
                 Our team of financial experts combines decades of industry experience with cutting-edge technology to deliver lending solutions that work for modern businesses and individuals.
@@ -131,10 +131,10 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-blue-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Ready to Experience the Byton Difference?
+            Ready to Experience the Brighten Difference?
           </h2>
           <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who chose Byton Finance for their lending needs.
+            Join thousands of satisfied customers who chose Brighten Finance for their lending needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="bg-white text-blue-600 hover:bg-gray-100">

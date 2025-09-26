@@ -32,7 +32,7 @@ export default function SuccessStep({ referenceNumber }: SuccessStepProps) {
           </div>
           <CardTitle className="text-2xl text-green-700">Application Submitted Successfully!</CardTitle>
           <CardDescription className="text-lg">
-            Thank you for choosing Byton Finance. Your loan application has been received and is being processed.
+            Thank you for choosing Brighten Finance. Your loan application has been received and is being processed.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

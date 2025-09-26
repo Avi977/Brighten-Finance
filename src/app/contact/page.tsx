@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Phone, Mail, MapPin, Clock } from 'lucide-react'
 
 export const metadata = generatePageMetadata(
-  'Contact Byton Finance - Get Help With Your Loan',
+  'Contact Brighten Finance - Get Help With Your Loan',
   'Contact our expert loan specialists for personalized assistance with business loans, car loans, and financing options. Call, email, or visit us today.',
   '/contact'
 )
@@ -58,7 +58,7 @@ export default function ContactPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-lg font-semibold">Byton Finance Headquarters</p>
+              <p className="text-lg font-semibold">Brighten Finance Headquarters</p>
               <p className="text-muted-foreground">123 Financial District</p>
               <p className="text-muted-foreground">New York, NY 10004</p>
             </CardContent>

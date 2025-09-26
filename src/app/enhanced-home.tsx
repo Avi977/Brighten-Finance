@@ -458,7 +458,7 @@ export function EnhancedHomePage() {
             animate={{ opacity: benefitsInView ? 1 : 0, y: benefitsInView ? 0 : 50 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold mb-4 text-slate-800">Why Choose Byton Finance?</h2>
+            <h2 className="text-4xl font-bold mb-4 text-slate-800">Why Choose Brighten Finance?</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               We combine cutting-edge technology with personal service to make financing simple and accessible.
             </p>
@@ -509,7 +509,6 @@ export function EnhancedHomePage() {
                   className={`bg-gradient-to-br ${benefit.color} rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg`}
                   whileHover={{
                     scale: 1.2,
-                    rotate: 360,
                     boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}

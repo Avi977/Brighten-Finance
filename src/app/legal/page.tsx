@@ -2,7 +2,7 @@ import { generatePageMetadata } from '@/lib/seo'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const metadata = generatePageMetadata(
-  'Terms & Conditions, Privacy Policy - Byton Finance',
+  'Terms & Conditions, Privacy Policy - Brighten Finance',
   'Read our terms and conditions, privacy policy, and legal information. Learn about our lending practices, data protection, and customer rights.',
   '/legal'
 )
@@ -24,7 +24,7 @@ export default function LegalPage() {
           </CardHeader>
           <CardContent className="prose max-w-none">
             <h3>1. Acceptance of Terms</h3>
-            <p>By using Byton Finance services, you agree to these terms and conditions.</p>
+            <p>By using Brighten Finance services, you agree to these terms and conditions.</p>
             
             <h3>2. Loan Application Process</h3>
             <p>All loan applications are subject to credit approval and verification of information provided.</p>
@@ -78,7 +78,7 @@ export default function LegalPage() {
             <CardTitle>Regulatory Information</CardTitle>
           </CardHeader>
           <CardContent className="prose max-w-none">
-            <p>Byton Finance is a licensed lender operating under applicable state and federal regulations.</p>
+            <p>Brighten Finance is a licensed lender operating under applicable state and federal regulations.</p>
             
             <h3>Equal Credit Opportunity</h3>
             <p>We are committed to fair lending practices and do not discriminate based on race, color, religion, national origin, sex, marital status, age, or other protected characteristics.</p>
