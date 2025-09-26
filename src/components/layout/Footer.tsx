@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="text-lg font-semibold mb-4">Byton Finance</h3>
+            <h3 className="text-lg font-semibold mb-4">Brighten Finance</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Your trusted partner for business and car loans. Fast approvals, competitive rates, and excellent customer service.
             </p>
@@ -65,7 +65,7 @@ const Footer = () => {
         </div>
         <Separator className="my-6 md:my-8" />
         <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground space-y-2 sm:space-y-0">
-          <p>&copy; 2024 Byton Finance. All rights reserved.</p>
+          <p>&copy; 2024 Brighten Finance. All rights reserved.</p>
           <p className="text-center sm:text-right">
             Licensed Lender | Equal Housing Opportunity
           </p>

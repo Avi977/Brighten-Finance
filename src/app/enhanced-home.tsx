@@ -60,29 +60,29 @@ export function EnhancedHomePage() {
           />
           {/* Mobile Gradient - Minimal overlay to show car clearly */}
           <motion.div
-            className="md:hidden absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-800/20 to-transparent"
+            className="md:hidden absolute inset-0 bg-gradient-to-r from-red-950/75 via-red-900/30 to-transparent"
             animate={{
               background: [
-                "linear-gradient(to right, rgb(15 23 42 / 0.60), rgb(30 41 59 / 0.20), transparent)",
-                "linear-gradient(to right, rgb(15 23 42 / 0.55), rgb(30 41 59 / 0.15), transparent)",
-                "linear-gradient(to right, rgb(15 23 42 / 0.60), rgb(30 41 59 / 0.20), transparent)"
+                "linear-gradient(to right, rgb(69 10 10 / 0.75), rgb(127 29 29 / 0.30), transparent)",
+                "linear-gradient(to right, rgb(69 10 10 / 0.70), rgb(127 29 29 / 0.25), transparent)",
+                "linear-gradient(to right, rgb(69 10 10 / 0.75), rgb(127 29 29 / 0.30), transparent)"
               ]
             }}
             transition={{ duration: 8, repeat: Infinity }}
           />
           {/* Desktop Gradient */}
           <motion.div
-            className="hidden md:block absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-800/70 to-slate-900/30"
+            className="hidden md:block absolute inset-0 bg-gradient-to-r from-red-950/95 via-red-900/80 to-red-950/40"
             animate={{
               background: [
-                "linear-gradient(to right, rgb(15 23 42 / 0.95), rgb(30 41 59 / 0.7), rgb(15 23 42 / 0.3))",
-                "linear-gradient(to right, rgb(15 23 42 / 0.9), rgb(30 41 59 / 0.75), rgb(15 23 42 / 0.4))",
-                "linear-gradient(to right, rgb(15 23 42 / 0.95), rgb(30 41 59 / 0.7), rgb(15 23 42 / 0.3))"
+                "linear-gradient(to right, rgb(69 10 10 / 0.95), rgb(127 29 29 / 0.80), rgb(69 10 10 / 0.40))",
+                "linear-gradient(to right, rgb(69 10 10 / 0.92), rgb(127 29 29 / 0.85), rgb(69 10 10 / 0.45))",
+                "linear-gradient(to right, rgb(69 10 10 / 0.95), rgb(127 29 29 / 0.80), rgb(69 10 10 / 0.40))"
               ]
             }}
             transition={{ duration: 8, repeat: Infinity }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/85 via-slate-900/20 to-transparent md:from-slate-900/80 md:via-transparent md:to-slate-900/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-red-950/90 via-red-950/30 to-transparent md:from-red-950/85 md:via-transparent md:to-red-950/30"></div>
         </motion.div>
 
         {/* Professional Content Layout */}
@@ -125,7 +125,7 @@ export function EnhancedHomePage() {
                   Fast & Reliable
                 </motion.span>
                 <motion.span
-                  className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                  className="block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 bg-clip-text text-transparent"
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 1.1 }}
@@ -158,7 +158,7 @@ export function EnhancedHomePage() {
                   <Button
                     size="lg"
                     asChild
-                    className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-xl transition-all duration-300"
                   >
                     <Link href="/apply">
                       Apply Now
@@ -209,7 +209,7 @@ export function EnhancedHomePage() {
                     transition={{ duration: 0.4, delay: 1.8 + index * 0.1 }}
                   >
                     <motion.div
-                      className="w-2 h-2 rounded-full bg-green-400"
+                      className="w-2 h-2 rounded-full bg-yellow-400"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
                     />
@@ -226,11 +226,11 @@ export function EnhancedHomePage() {
                 transition={{ duration: 0.6, delay: 1.9 }}
               >
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-4 border border-white/20">
-                  <div className="text-lg font-bold text-blue-400">$50M+</div>
+                  <div className="text-lg font-bold text-orange-400">$50M+</div>
                   <div className="text-xs text-slate-300">Loans Funded</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-4 border border-white/20">
-                  <div className="text-lg font-bold text-blue-400">24hrs</div>
+                  <div className="text-lg font-bold text-orange-400">24hrs</div>
                   <div className="text-xs text-slate-300">Avg. Approval</div>
                 </div>
               </motion.div>
@@ -266,7 +266,7 @@ export function EnhancedHomePage() {
                           transition={{ type: "spring", stiffness: 300 }}
                         >
                           <motion.div
-                            className={`text-3xl font-bold mb-1 ${index < 2 ? 'text-blue-400' : 'text-green-400'}`}
+                            className={`text-3xl font-bold mb-1 ${index < 2 ? 'text-orange-400' : 'text-amber-400'}`}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: stat.delay }}
@@ -325,18 +325,18 @@ export function EnhancedHomePage() {
             >
               <Card className="relative p-8 pt-12 bg-white border-slate-200 shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-visible">
                 {/* Glassmorphism Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-cyan-50/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 to-orange-50/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                  <Badge className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 text-sm font-semibold shadow-xl border-2 border-white">
+                  <Badge className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-6 py-2 text-sm font-semibold shadow-xl border-2 border-white">
                     Most Popular
                   </Badge>
                 </div>
 
                 <div className="text-center mb-6 relative z-10">
                   <motion.div
-                    className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
-                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+                    whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
                     <Building className="w-8 h-8 text-white" />
@@ -359,7 +359,7 @@ export function EnhancedHomePage() {
                       animate={{ opacity: loanTypesInView ? 1 : 0, x: loanTypesInView ? 0 : -20 }}
                       transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
                     >
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-orange-500 flex-shrink-0" />
                       <span className="text-sm text-slate-700">{feature}</span>
                     </motion.div>
                   ))}
@@ -370,7 +370,7 @@ export function EnhancedHomePage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700" size="lg" asChild>
+                    <Button className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700" size="lg" asChild>
                       <Link href="/business-loans">Apply for Business Loan</Link>
                     </Button>
                   </motion.div>
@@ -390,12 +390,12 @@ export function EnhancedHomePage() {
             >
               <Card className="relative p-8 bg-white border-slate-200 shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden">
                 {/* Glassmorphism Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-pink-50/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/50 to-amber-50/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
                 <div className="text-center mb-6 relative z-10">
                   <motion.div
-                    className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
-                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+                    whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
                     <Car className="w-8 h-8 text-white" />
@@ -418,7 +418,7 @@ export function EnhancedHomePage() {
                       animate={{ opacity: loanTypesInView ? 1 : 0, x: loanTypesInView ? 0 : 20 }}
                       transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
                     >
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-orange-500 flex-shrink-0" />
                       <span className="text-sm text-slate-700">{feature}</span>
                     </motion.div>
                   ))}
@@ -429,7 +429,7 @@ export function EnhancedHomePage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" size="lg" asChild>
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700" size="lg" asChild>
                       <Link href="/car-loans">Apply for Auto Loan</Link>
                     </Button>
                   </motion.div>
@@ -559,7 +559,7 @@ export function EnhancedHomePage() {
 
       {/* Enhanced CTA Section */}
       <motion.section
-        className="py-20 bg-gradient-to-r from-blue-600 to-cyan-600 text-white relative overflow-hidden"
+        className="py-20 bg-gradient-to-r from-red-600 to-orange-600 text-white relative overflow-hidden"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -592,13 +592,13 @@ export function EnhancedHomePage() {
             Ready to Get Started?
           </motion.h2>
           <motion.p
-            className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto"
+            className="text-xl mb-8 text-orange-100 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Join thousands of satisfied customers who have achieved their financial goals with Byton Finance.
+            Join thousands of satisfied customers who have achieved their financial goals with Brighten Finance.
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -613,7 +613,7 @@ export function EnhancedHomePage() {
             >
               <Button
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-4 text-lg shadow-xl"
+                className="bg-white text-red-600 hover:bg-gray-100 font-semibold px-8 py-4 text-lg shadow-xl"
                 asChild
               >
                 <Link href="/apply">
@@ -635,7 +635,7 @@ export function EnhancedHomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-medium"
+                className="border-2 border-white bg-white text-red-600 hover:bg-red-600 hover:text-white px-8 py-4 text-lg font-medium"
                 asChild
               >
                 <Link href="/contact">Contact Us</Link>

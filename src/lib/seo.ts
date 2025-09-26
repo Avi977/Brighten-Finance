@@ -2,34 +2,34 @@ import { Metadata } from 'next'
 
 export const defaultMetadata: Metadata = {
   title: {
-    default: 'Byton Finance - Business & Car Loans Made Simple',
-    template: '%s | Byton Finance'
+    default: 'Brighten Finance - Business & Car Loans Made Simple',
+    template: '%s | Brighten Finance'
   },
   description: 'Get approved for business loans and car loans with competitive rates. Fast application process, expert support, and flexible terms to help you achieve your financial goals.',
   keywords: ['business loans', 'car loans', 'automotive financing', 'commercial loans', 'business funding', 'vehicle financing'],
-  authors: [{ name: 'Byton Finance' }],
-  creator: 'Byton Finance',
-  publisher: 'Byton Finance',
+  authors: [{ name: 'Brighten Finance' }],
+  creator: 'Brighten Finance',
+  publisher: 'Brighten Finance',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://bytonfinance.com'),
+  metadataBase: new URL('https://brightenfinance.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'Byton Finance - Business & Car Loans Made Simple',
+    title: 'Brighten Finance - Business & Car Loans Made Simple',
     description: 'Get approved for business loans and car loans with competitive rates. Fast application process, expert support, and flexible terms.',
-    url: 'https://bytonfinance.com',
-    siteName: 'Byton Finance',
+    url: 'https://brightenfinance.com',
+    siteName: 'Brighten Finance',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Byton Finance - Your Financial Partner',
+        alt: 'Brighten Finance - Your Financial Partner',
       },
     ],
     locale: 'en_US',
@@ -37,7 +37,7 @@ export const defaultMetadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Byton Finance - Business & Car Loans Made Simple',
+    title: 'Brighten Finance - Business & Car Loans Made Simple',
     description: 'Get approved for business loans and car loans with competitive rates. Fast application process, expert support, and flexible terms.',
     images: ['/og-image.jpg'],
   },
@@ -68,7 +68,7 @@ export function generatePageMetadata(
     openGraph: {
       title,
       description,
-      url: `https://bytonfinance.com${path}`,
+      url: `https://brightenfinance.com${path}`,
     },
     twitter: {
       title,

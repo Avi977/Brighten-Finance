@@ -15,11 +15,11 @@ const Header = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
               <CreditCard className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-2xl bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-              Byton Finance
+            <span className="font-bold text-2xl bg-gradient-to-r from-red-800 to-orange-600 bg-clip-text text-transparent">
+              Brighten Finance
             </span>
           </Link>
         </div>
@@ -40,7 +40,7 @@ const Header = () => {
                           className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 no-underline outline-none focus:shadow-lg transition-shadow border border-blue-100"
                           href="/apply"
                         >
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center mb-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-orange-600 rounded-lg flex items-center justify-center mb-4">
                             <CreditCard className="w-6 h-6 text-white" />
                           </div>
                           <div className="mb-2 mt-4 text-lg font-semibold text-slate-800">
@@ -56,7 +56,7 @@ const Header = () => {
                       <NavigationMenuLink asChild>
                         <Link href="/business-loans" className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-colors hover:bg-slate-50 border border-transparent hover:border-slate-200">
                           <div className="flex items-center space-x-3 mb-2">
-                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
                               <Building className="w-4 h-4 text-white" />
                             </div>
                             <div className="text-sm font-semibold leading-none text-slate-800">Business Loans</div>
@@ -116,7 +116,7 @@ const Header = () => {
               Contact
             </Link>
           </Button>
-          <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg" asChild>
+          <Button className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg" asChild>
             <Link href="/apply">Apply Now</Link>
           </Button>
         </div>
@@ -144,7 +144,7 @@ const Header = () => {
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
                     <Building className="w-4 h-4 text-white" />
                   </div>
                   <div>
@@ -188,7 +188,7 @@ const Header = () => {
                     Contact Us
                   </Link>
                 </Button>
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700" asChild>
+                <Button className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-blue-700 hover:to-cyan-700" asChild>
                   <Link href="/apply" onClick={() => setIsOpen(false)}>Apply Now</Link>
                 </Button>
               </div>

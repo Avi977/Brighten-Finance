@@ -1,4 +1,4 @@
-# Byton Finance
+# Brighten Finance
 
 ## High-Performance Next.js 14 Loan Application Platform
 
