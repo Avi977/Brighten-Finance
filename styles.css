@@ -732,6 +732,17 @@ body {
     }
 }
 
+@keyframes slideInLeftImage {
+    from {
+        opacity: 0;
+        transform: translateX(-45%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-45%) scale(1);
+    }
+}
+
 /* Loan Types Section */
 .loan-types {
     padding: 5rem 0;
@@ -1215,7 +1226,10 @@ body {
 
 .services-bg {
     position: absolute;
-    inset: 0;
+    top: -5rem;
+    left: 0;
+    right: 0;
+    bottom: -5rem;
     z-index: 0;
 }
 
@@ -1243,6 +1257,11 @@ body {
     width: 100%;
     height: auto;
     max-width: 1100px;
+    opacity: 0;
+}
+
+.services-section.animate .consultant-img {
+    animation: slideInLeftImage 0.8s ease-out 0.2s forwards;
 }
 
 .services-content {
@@ -1251,15 +1270,19 @@ body {
 
 .services-header {
     margin-bottom: 2rem;
-    margin-top: -2rem;
+    margin-top: -10rem;
+    opacity: 0;
+}
+
+.services-section.animate .services-header {
+    animation: fadeInUp 0.8s ease-out 0.4s forwards;
 }
 
 @media (min-width: 1024px) {
     .services-image {
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+        bottom: -20%;
         z-index: 1;
     }
 
@@ -1311,6 +1334,7 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
+    margin-top: 6rem;
 }
 
 .service-item {
@@ -1322,6 +1346,27 @@ body {
     border-radius: 12px;
     transition: all 0.6s ease;
     min-height: 180px;
+    opacity: 0;
+}
+
+.services-section.animate .service-item:nth-child(1) {
+    animation: fadeInUp 0.6s ease-out 0.6s forwards;
+}
+
+.services-section.animate .service-item:nth-child(2) {
+    animation: fadeInUp 0.6s ease-out 0.8s forwards;
+}
+
+.services-section.animate .service-item:nth-child(3) {
+    animation: fadeInUp 0.6s ease-out 1s forwards;
+}
+
+.services-section.animate .service-item:nth-child(4) {
+    animation: fadeInUp 0.6s ease-out 1.2s forwards;
+}
+
+.services-section.animate .service-item:nth-child(5) {
+    animation: fadeInUp 0.6s ease-out 1.4s forwards;
 }
 
 .service-item:hover {

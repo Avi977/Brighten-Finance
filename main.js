@@ -85,6 +85,18 @@ const aboutObserver = new IntersectionObserver((entries) => {
     rootMargin: '0px'
 });
 
+// Intersection Observer for Services Section Animation
+const servicesObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('animate')) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, {
+    threshold: 0.2,
+    rootMargin: '0px'
+});
+
 // Intersection Observer for Fade-in Animations
 const fadeInObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -103,6 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const aboutSection = document.querySelector('.about-section');
     if (aboutSection) {
         aboutObserver.observe(aboutSection);
+    }
+    
+    // Observe services section
+    const servicesSection = document.querySelector('.services-section');
+    if (servicesSection) {
+        servicesObserver.observe(servicesSection);
     }
     
     const sections = document.querySelectorAll('.loan-types, .benefits, .cta-section');
