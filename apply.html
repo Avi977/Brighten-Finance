@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for a Loan | Brighten Australia Pty Ltd</title>
+    <meta name="description" content="Apply for a business or car loan with Brighten Australia Pty Ltd. Fast approval, competitive rates, and simple application process.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .form-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .form-header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--slate-50), white);
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            color: var(--slate-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--slate-600);
+        }
+
+        .progress-container {
+            padding: 1.5rem 2rem 0;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--slate-200);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--red-600), var(--orange-600));
+            transition: width 0.3s ease;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .progress-step-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            background: var(--slate-200);
+            color: var(--slate-600);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .progress-step-badge.active {
+            background: linear-gradient(to right, var(--red-600), var(--orange-600));
+            color: white;
+        }
+
+        .progress-step-badge.completed {
+            background: var(--green-600);
+            color: white;
+        }
+
+        .progress-step-label {
+            font-size: 0.75rem;
+            color: var(--slate-600);
+            text-align: center;
+        }
+
+        .form-content {
+            padding: 2rem;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .step-header h2 {
+            font-size: 1.5rem;
+            color: var(--slate-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-header p {
+            color: var(--slate-600);
+        }
+
+        .loan-type-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .loan-type-option {
+            position: relative;
+        }
+
+        .loan-type-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loan-type-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            border: 2px solid var(--slate-200);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .loan-type-label:hover {
+            border-color: var(--red-600);
+            background: var(--slate-50);
+        }
+
+        .loan-type-input:checked + .loan-type-label {
+            border-color: var(--red-600);
+            background: linear-gradient(135deg, rgba(254, 226, 226, 0.3), rgba(255, 237, 213, 0.3));
+        }
+
+        .loan-type-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--red-600);
+        }
+
+        .loan-type-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .loan-type-desc {
+            font-size: 0.875rem;
+            color: var(--slate-600);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--slate-700);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--slate-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--red-600);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-input.error, .form-select.error, .form-textarea.error {
+            border-color: #ef4444;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-input {
+            margin-top: 0.25rem;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 0.875rem;
+            color: var(--slate-700);
+            cursor: pointer;
+        }
+
+        .checkbox-label a {
+            color: var(--red-600);
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 2rem;
+            border-top: 1px solid var(--slate-200);
+            margin-top: 2rem;
+        }
+
+        .btn-prev {
+            background: transparent;
+            border: 2px solid var(--slate-300);
+            color: var(--slate-700);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-prev:hover {
+            background: var(--slate-50);
+        }
+
+        .btn-next, .btn-submit {
+            background: linear-gradient(to right, var(--red-600), var(--orange-600));
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-next:hover, .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .review-section {
+            background: var(--slate-50);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-label {
+            color: var(--slate-600);
+            font-size: 0.875rem;
+        }
+
+        .review-value {
+            color: var(--slate-800);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .success-container {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2.5rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--slate-800);
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: var(--slate-600);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .reference-box {
+            background: var(--slate-50);
+            border: 2px dashed var(--slate-300);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .reference-label {
+            font-size: 0.875rem;
+            color: var(--slate-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .reference-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--red-600);
+            font-family: monospace;
+        }
+
+        @media (min-width: 768px) {
+            .loan-type-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .progress-step-label {
+                display: block;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .progress-step-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (same as index.html) -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <div class="logo-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="logo-text">Brighten Australia Pty Ltd</span>
+                </a>
+            </div>
+
+            <nav class="nav-desktop">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="business-loans.html" class="nav-link">Business Loans</a>
+                <a href="car-loans.html" class="nav-link">Car Loans</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="contact.html" class="btn btn-outline">
+                    <i class="fas fa-phone"></i> Contact
+                </a>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="index.html" class="mobile-menu-link">Home</a>
+                <a href="business-loans.html" class="mobile-menu-link">Business Loans</a>
+                <a href="car-loans.html" class="mobile-menu-link">Car Loans</a>
+                <a href="contact.html" class="mobile-menu-link">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Application Form -->
+    <div class="form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Loan Application</h1>
+                <p>Complete your application in 5 easy steps</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+                </div>
+                <div class="progress-steps" id="progressSteps">
+                    <div class="progress-step">
+                        <div class="progress-step-badge active">1</div>
+                        <div class="progress-step-label">Loan Type</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-badge">2</div>
+                        <div class="progress-step-label">Loan Details</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-badge">3</div>
+                        <div class="progress-step-label">Specific Details</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-badge">4</div>
+                        <div class="progress-step-label">Personal Info</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-badge">5</div>
+                        <div class="progress-step-label">Review</div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="loanApplicationForm" class="form-content">
+                <!-- Step 1: Loan Type -->
+                <div class="form-step active" data-step="1">
+                    <div class="step-header">
+                        <h2>What type of loan do you need?</h2>
+                        <p>Select the option that best describes your financing needs</p>
+                    </div>
+
+                    <div class="loan-type-grid">
+                        <div class="loan-type-option">
+                            <input type="radio" name="loanType" id="businessLoan" value="business" class="loan-type-input" required>
+                            <label for="businessLoan" class="loan-type-label">
+                                <i class="fas fa-building loan-type-icon"></i>
+                                <div class="loan-type-title">Business Loan</div>
+                                <div class="loan-type-desc">Financing for business growth, equipment, working capital, or expansion</div>
+                            </label>
+                        </div>
+
+                        <div class="loan-type-option">
+                            <input type="radio" name="loanType" id="carLoan" value="car" class="loan-type-input" required>
+                            <label for="carLoan" class="loan-type-label">
+                                <i class="fas fa-car loan-type-icon"></i>
+                                <div class="loan-type-title">Car Loan</div>
+                                <div class="loan-type-desc">Financing for new or used vehicles with competitive rates</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Loan Details -->
+                <div class="form-step" data-step="2">
+                    <div class="step-header">
+                        <h2>Loan Details</h2>
+                        <p>Tell us about your loan requirements</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanAmount" class="form-label">Loan Amount *</label>
+                        <input type="number" id="loanAmount" name="loanAmount" class="form-input" min="5000" max="5000000" step="1000" placeholder="e.g., 50000" required>
+                        <div class="form-error" id="loanAmountError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanPurpose" class="form-label">Purpose of Loan *</label>
+                        <textarea id="loanPurpose" name="loanPurpose" class="form-textarea" placeholder="Describe how you'll use this loan..." required></textarea>
+                        <div class="form-error" id="loanPurposeError"></div>
+                    </div>
+                </div>
+
+                <!-- Step 3a: Business Details -->
+                <div class="form-step" data-step="3" id="businessDetailsStep" style="display: none;">
+                    <div class="step-header">
+                        <h2>Business Details</h2>
+                        <p>Tell us about your business</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="businessName" class="form-label">Business Name *</label>
+                        <input type="text" id="businessName" name="businessName" class="form-input" placeholder="Your business name">
+                        <div class="form-error" id="businessNameError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="businessType" class="form-label">Business Type *</label>
+                            <select id="businessType" name="businessType" class="form-select">
+                                <option value="">Select type</option>
+                                <option value="sole-proprietorship">Sole Proprietorship</option>
+                                <option value="llc">LLC</option>
+                                <option value="corporation">Corporation</option>
+                                <option value="partnership">Partnership</option>
+                            </select>
+                            <div class="form-error" id="businessTypeError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="yearsInBusiness" class="form-label">Years in Business *</label>
+                            <input type="number" id="yearsInBusiness" name="yearsInBusiness" class="form-input" min="0" max="100" placeholder="e.g., 5">
+                            <div class="form-error" id="yearsInBusinessError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="annualRevenue" class="form-label">Annual Revenue *</label>
+                        <input type="number" id="annualRevenue" name="annualRevenue" class="form-input" min="0" step="1000" placeholder="e.g., 250000">
+                        <div class="form-error" id="annualRevenueError"></div>
+                    </div>
+                </div>
+
+                <!-- Step 3b: Vehicle Details -->
+                <div class="form-step" data-step="3" id="vehicleDetailsStep" style="display: none;">
+                    <div class="step-header">
+                        <h2>Vehicle Details</h2>
+                        <p>Tell us about the vehicle you want to finance</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Condition *</label>
+                        <div style="display: flex; gap: 2rem;">
+                            <div class="checkbox-group">
+                                <input type="radio" id="vehicleNew" name="vehicleType" value="new" class="checkbox-input">
+                                <label for="vehicleNew" class="checkbox-label">New Vehicle</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="radio" id="vehicleUsed" name="vehicleType" value="used" class="checkbox-input">
+                                <label for="vehicleUsed" class="checkbox-label">Used Vehicle</label>
+                            </div>
+                        </div>
+                        <div class="form-error" id="vehicleTypeError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicleMake" class="form-label">Make *</label>
+                            <input type="text" id="vehicleMake" name="vehicleMake" class="form-input" placeholder="e.g., Mercedes">
+                            <div class="form-error" id="vehicleMakeError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehicleModel" class="form-label">Model *</label>
+                            <input type="text" id="vehicleModel" name="vehicleModel" class="form-input" placeholder="e.g., C-Class">
+                            <div class="form-error" id="vehicleModelError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicleYear" class="form-label">Year *</label>
+                        <input type="number" id="vehicleYear" name="vehicleYear" class="form-input" min="1990" max="2025" placeholder="e.g., 2024">
+                        <div class="form-error" id="vehicleYearError"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Personal Details -->
+                <div class="form-step" data-step="4">
+                    <div class="step-header">
+                        <h2>Personal Information</h2>
+                        <p>Your contact and financial details</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="form-label">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            <div class="form-error" id="firstNameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName" class="form-label">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            <div class="form-error" id="lastNameError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <div class="form-error" id="emailError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone *</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" required>
+                            <div class="form-error" id="phoneError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" class="form-label">Street Address *</label>
+                        <input type="text" id="address" name="address" class="form-input" required>
+                        <div class="form-error" id="addressError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city" class="form-label">City *</label>
+                            <input type="text" id="city" name="city" class="form-input" required>
+                            <div class="form-error" id="cityError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state" class="form-label">State *</label>
+                            <input type="text" id="state" name="state" class="form-input" required>
+                            <div class="form-error" id="stateError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zipCode" class="form-label">ZIP Code *</label>
+                        <input type="text" id="zipCode" name="zipCode" class="form-input" pattern="[0-9]{5}" required>
+                        <div class="form-error" id="zipCodeError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employmentStatus" class="form-label">Employment Status *</label>
+                            <select id="employmentStatus" name="employmentStatus" class="form-select" required>
+                                <option value="">Select status</option>
+                                <option value="employed">Employed</option>
+                                <option value="self-employed">Self-Employed</option>
+                                <option value="unemployed">Unemployed</option>
+                                <option value="retired">Retired</option>
+                            </select>
+                            <div class="form-error" id="employmentStatusError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="annualIncome" class="form-label">Annual Income *</label>
+                            <input type="number" id="annualIncome" name="annualIncome" class="form-input" min="20000" step="1000" required>
+                            <div class="form-error" id="annualIncomeError"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Review -->
+                <div class="form-step" data-step="5">
+                    <div class="step-header">
+                        <h2>Review Your Application</h2>
+                        <p>Please review all information before submitting</p>
+                    </div>
+
+                    <div id="reviewContent"></div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeToTerms" name="agreeToTerms" class="checkbox-input" required>
+                        <label for="agreeToTerms" class="checkbox-label">
+                            I agree to the <a href="legal.html">Terms of Service</a> and <a href="legal.html">Privacy Policy</a> *
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeToCredit" name="agreeToCredit" class="checkbox-input" required>
+                        <label for="agreeToCredit" class="checkbox-label">
+                            I authorize Brighten Australia Pty Ltd to check my credit report *
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Success Screen (hidden by default) -->
+                <div id="successScreen" style="display: none;">
+                    <div class="success-container">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="success-title">Application Submitted!</h2>
+                        <p class="success-message">
+                            Thank you for applying with Brighten Australia Pty Ltd. Your application has been received and is being reviewed by our team. You'll receive an email confirmation shortly.
+                        </p>
+                        <div class="reference-box">
+                            <div class="reference-label">Reference Number</div>
+                            <div class="reference-number" id="referenceNumber">BF-000000</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 400px; margin: 0 auto;">
+                            <a href="index.html" class="btn btn-primary">Return Home</a>
+                            <a href="contact.html" class="btn btn-outline">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions" id="formActions">
+                    <button type="button" class="btn btn-prev" id="prevBtn" style="visibility: hidden;">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn btn-next" id="nextBtn">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn" style="display: none;">
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer (same as index.html) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <span class="logo-text">Brighten Australia Pty Ltd</span>
+                    </div>
+                    <p class="footer-desc">Professional financing solutions for businesses and individuals.</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Loans</h4>
+                    <ul class="footer-links">
+                        <li><a href="business-loans.html">Business Loans</a></li>
+                        <li><a href="car-loans.html">Car Loans</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="legal.html">Privacy Policy</a></li>
+                        <li><a href="legal.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Brighten Australia Pty Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="form.js"></script>
+</body>
+</html>
