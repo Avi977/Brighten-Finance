@@ -73,6 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Intersection Observer for About Section Animation
+const aboutObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('animate')) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, {
+    threshold: 0.2,
+    rootMargin: '0px'
+});
+
 // Intersection Observer for Fade-in Animations
 const fadeInObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -87,6 +99,12 @@ const fadeInObserver = new IntersectionObserver((entries) => {
 
 // Observe sections for fade-in effect
 document.addEventListener('DOMContentLoaded', () => {
+    // Observe about section
+    const aboutSection = document.querySelector('.about-section');
+    if (aboutSection) {
+        aboutObserver.observe(aboutSection);
+    }
+    
     const sections = document.querySelectorAll('.loan-types, .benefits, .cta-section');
     sections.forEach(section => {
         section.style.opacity = '0';
