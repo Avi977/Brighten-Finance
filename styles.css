@@ -478,14 +478,19 @@ body {
 .carousel-slide {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+    opacity: 0 !important;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out, visibility 0s linear 1s;
     pointer-events: none;
+    z-index: 1;
 }
 
 .carousel-slide.active {
-    opacity: 1;
+    opacity: 1 !important;
+    visibility: visible;
+    transition: opacity 1s ease-in-out, visibility 0s linear 0s;
     pointer-events: auto;
+    z-index: 2;
 }
 
 .hero-image {
