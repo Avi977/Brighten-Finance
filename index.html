@@ -137,11 +137,42 @@
       </div>
 
       <div class="hero-bg">
-        <img
-          src="public/images/red blazer.jpg"
-          alt="Professional business and car financing solutions"
-          class="hero-image"
-        />
+        <div class="hero-carousel">
+          <div class="carousel-slide active">
+            <img
+              src="public/images/red blazer.jpg"
+              alt="Professional business and car financing solutions"
+              class="hero-image"
+            />
+          </div>
+          <div class="carousel-slide">
+            <img
+              src="public/images/car.jpg"
+              alt="Auto financing solutions"
+              class="hero-image hero-image-car"
+            />
+          </div>
+          <div class="carousel-slide">
+            <img
+              src="public/images/house-key.jpg"
+              alt="Financial solutions for your future"
+              class="hero-image"
+            />
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="carousel-indicators">
+          <button class="carousel-indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+          <button class="carousel-indicator" data-slide="1" aria-label="Go to slide 2"></button>
+          <button class="carousel-indicator" data-slide="2" aria-label="Go to slide 3"></button>
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-gradient"></div>
       </div>

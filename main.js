@@ -190,16 +190,20 @@ window.addEventListener('scroll', () => {
     
     if (hero && scrolled < window.innerHeight) {
         const heroContent = hero.querySelector('.hero-container');
-        const heroImage = hero.querySelector('.hero-image');
+        const heroImages = hero.querySelectorAll('.hero-image');
         
         if (heroContent) {
             heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
             heroContent.style.opacity = 1 - (scrolled / 500);
         }
         
-        if (heroImage) {
-            heroImage.style.transform = `translateY(${scrolled * 0.15}px) scale(${1 + scrolled * 0.0001})`;
-        }
+        heroImages.forEach(heroImage => {
+            if (heroImage.classList.contains('hero-image-car')) {
+                heroImage.style.transform = `translateY(${scrolled * 0.15 - 100}px) scale(${1 + scrolled * 0.0001})`;
+            } else {
+                heroImage.style.transform = `translateY(${scrolled * 0.15}px) scale(${1 + scrolled * 0.0001})`;
+            }
+        });
     }
 });
 
@@ -394,5 +398,89 @@ const debouncedScroll = debounce(() => {
 }, 100);
 
 window.addEventListener('scroll', debouncedScroll);
+
+// Hero Carousel Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    if (!slides.length) return;
+    
+    let currentSlide = 0;
+    let autoPlayInterval;
+    
+    function showSlide(index) {
+        // Remove active class from all slides and indicators
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Handle wrapping
+        if (index >= slides.length) {
+            currentSlide = 0;
+        } else if (index < 0) {
+            currentSlide = slides.length - 1;
+        } else {
+            currentSlide = index;
+        }
+        
+        // Add active class to current slide and indicator
+        slides[currentSlide].classList.add('active');
+        indicators[currentSlide].classList.add('active');
+    }
+    
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+    
+    function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 10000);
+    }
+    
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+    
+    // Event listeners for buttons
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            stopAutoPlay();
+            startAutoPlay();
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            stopAutoPlay();
+            startAutoPlay();
+        });
+    }
+    
+    // Event listeners for indicators
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            showSlide(index);
+            stopAutoPlay();
+            startAutoPlay();
+        });
+    });
+    
+    // Pause on hover
+    const heroCarousel = document.querySelector('.hero-carousel');
+    if (heroCarousel) {
+        heroCarousel.addEventListener('mouseenter', stopAutoPlay);
+        heroCarousel.addEventListener('mouseleave', startAutoPlay);
+    }
+    
+    // Start auto-play
+    startAutoPlay();
+});
 
 console.log('Brighten Australia Pty Ltd - Main JS Loaded Successfully');
