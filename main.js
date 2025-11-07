@@ -400,13 +400,18 @@ const debouncedScroll = debounce(() => {
 window.addEventListener('scroll', debouncedScroll);
 
 // Hero Carousel Functionality
-document.addEventListener('DOMContentLoaded', () => {
+function initCarousel() {
     const slides = document.querySelectorAll('.carousel-slide');
     const prevBtn = document.querySelector('.carousel-prev');
     const nextBtn = document.querySelector('.carousel-next');
     const indicators = document.querySelectorAll('.carousel-indicator');
     
-    if (!slides.length) return;
+    if (!slides.length) {
+        console.log('No carousel slides found');
+        return;
+    }
+    
+    console.log('Carousel initialized with', slides.length, 'slides');
     
     let currentSlide = 0;
     let autoPlayInterval;
@@ -479,8 +484,17 @@ document.addEventListener('DOMContentLoaded', () => {
         heroCarousel.addEventListener('mouseleave', startAutoPlay);
     }
     
-    // Start auto-play
+    // Initialize first slide and start auto-play
+    showSlide(0);
     startAutoPlay();
-});
+}
+
+// Initialize carousel when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarousel);
+} else {
+    // DOM already loaded
+    initCarousel();
+}
 
 console.log('Brighten Australia Pty Ltd - Main JS Loaded Successfully');
