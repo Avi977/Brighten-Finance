@@ -414,6 +414,7 @@ body {
     display: flex;
     align-items: flex-end;
     overflow: hidden;
+    background: black;
 }
 
 .floating-orbs {
@@ -506,7 +507,10 @@ body {
 }
 
 .hero-image.hero-image-car {
-    object-position: 35% 10% !important;
+    object-fit: cover !important;
+    object-position: center 50% !important;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 .carousel-controls {

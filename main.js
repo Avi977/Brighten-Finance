@@ -199,7 +199,7 @@ window.addEventListener('scroll', () => {
         
         heroImages.forEach(heroImage => {
             if (heroImage.classList.contains('hero-image-car')) {
-                heroImage.style.transform = `translateY(${scrolled * 0.15 - 100}px) scale(${1 + scrolled * 0.0001})`;
+                heroImage.style.transform = `translateY(${scrolled * 0.15}px)`;
             } else {
                 heroImage.style.transform = `translateY(${scrolled * 0.15}px) scale(${1 + scrolled * 0.0001})`;
             }
