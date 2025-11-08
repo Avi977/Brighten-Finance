@@ -421,40 +421,43 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
+    z-index: 999;
+    top: 0;
+    left: 0;
 }
 
 .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.15;
+    filter: blur(120px);
+    opacity: 0.25;
     animation: float 20s infinite ease-in-out;
+    mix-blend-mode: screen;
 }
 
 .orb-1 {
-    width: 400px;
-    height: 400px;
-    background: var(--orange-400);
-    top: 10%;
-    left: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--red-500), var(--red-600));
+    top: 15%;
+    left: 5%;
 }
 
 .orb-2 {
-    width: 300px;
-    height: 300px;
-    background: var(--red-500);
-    top: 50%;
-    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--yellow-400), var(--orange-500));
+    top: 40%;
+    right: 15%;
     animation-delay: -5s;
 }
 
 .orb-3 {
-    width: 250px;
-    height: 250px;
-    background: var(--yellow-400);
-    bottom: 10%;
-    left: 30%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, var(--yellow-500), var(--amber-600));
+    bottom: 20%;
+    left: 35%;
     animation-delay: -10s;
 }
 
@@ -467,12 +470,14 @@ body {
 .hero-bg {
     position: absolute;
     inset: 0;
+    z-index: 1;
 }
 
 .hero-carousel {
     position: relative;
     width: 100%;
     height: 100%;
+    z-index: 1;
 }
 
 .carousel-slide {
@@ -490,7 +495,7 @@ body {
     visibility: visible;
     transition: opacity 1s ease-in-out, visibility 0s linear 0s;
     pointer-events: auto;
-    z-index: 2;
+    z-index: 1;
 }
 
 .hero-image {
@@ -575,12 +580,14 @@ body {
     inset: 0;
     background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2), transparent);
     animation: overlayPulse 8s infinite;
+    z-index: 6;
 }
 
 .hero-gradient {
     position: absolute;
     inset: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), transparent);
+    z-index: 7;
 }
 
 @keyframes overlayPulse {
@@ -590,7 +597,7 @@ body {
 
 .hero-container {
     position: relative;
-    z-index: 10;
+    z-index: 1000;
     padding-bottom: 4rem;
     padding-top: 5rem;
     display: grid;
@@ -651,7 +658,7 @@ body {
 
 .hero-description {
     font-size: 0.95rem;
-    color: #cbd5e1;
+    color: white;
     margin-bottom: 2rem;
     max-width: 600px;
     line-height: 1.6;
